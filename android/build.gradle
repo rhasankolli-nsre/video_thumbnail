@@ -1,5 +1,5 @@
-//group 'xyz.justsoft.video_thumbnail'
-//version '1.0-SNAPSHOT'
+group 'xyz.justsoft.video_thumbnail'
+version '1.0-SNAPSHOT'
 
 buildscript {
     repositories {
@@ -8,33 +8,38 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.0.0' // Updated AGP version
+        classpath 'com.android.tools.build:gradle:4.1.0'
     }
 }
 
-plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android' version '1.7.1' apply false
-}
-
-android {
-    namespace = "xyz.justsoft.video_thumbnail"
-    compileSdk = 33
-
-    defaultConfig {
-        minSdk = 31
-        targetSdk = 33 // Added targetSdkVersion
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    lint {
-        disable 'InvalidPackage'
-    }
-}
-
-allprojects {
+rootProject.allprojects {
     repositories {
         google()
         jcenter()
     }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    // Conditionally set namespace for compatibility with new AGP versions
+    if (project.android.hasProperty("namespace")) {
+        namespace = "xyz.justsoft.video_thumbnail"
+    }
+
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 31
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+}
+
+dependencies {
+    // Add any necessary dependencies here, for example:
+    // implementation 'com.some.library:version'
 }
