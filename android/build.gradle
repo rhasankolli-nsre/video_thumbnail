@@ -1,45 +1,18 @@
-group 'xyz.justsoft.video_thumbnail'
-version '1.0-SNAPSHOT'
-
-buildscript {
+allprojects {
     repositories {
         google()
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        mavenCentral()
     }
 }
 
-rootProject.allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
 }
 
-apply plugin: 'com.android.library'
-
-android {
-    // Conditionally set namespace for compatibility with new AGP versions
-    if (project.android.hasProperty("namespace")) {
-        namespace = "xyz.justsoft.video_thumbnail"
-    }
-
-    compileSdkVersion 33
-
-    defaultConfig {
-        minSdkVersion 31
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    lintOptions {
-        disable 'InvalidPackage'
-    }
-}
-
-dependencies {
-    // Add any necessary dependencies here, for example:
-    // implementation 'com.some.library:version'
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
 }
